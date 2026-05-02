@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Digital Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --card-bg: #fdfdfd;
+            --text-color: #333;
+            --shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --border-radius: 25px; /* Kvadrat bənzəri dairə (Rounded Square) */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid #eee;
+            transition: transform 0.2s;
+        }
+
+        .menu-card:active {
+            transform: scale(0.95);
+        }
+
+        .menu-card img {
+            width: 100%;
+            aspect-ratio: 1/1;
+            object-fit: cover;
+            border-radius: calc(var(--border-radius) - 5px);
+            margin-bottom: 10px;
+        }
+
+        .menu-card h3 {
+            font-size: 1rem;
+            margin: 10px 0 5px;
+            font-weight: 600;
+        }
+
+        .menu-card p {
+            font-size: 0.75rem;
+            color: #777;
+            margin-bottom: 10px;
+            height: 35px;
+            overflow: hidden;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #000;
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 15px;
+            display: inline-block;
+        }
+
+        /* Mobil üçün xüsusi nizam */
+        @media (max-width: 400px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .menu-card {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>RESTO MENU</h1>
+        <p>Dadlı seçiminiz üçün təşəkkürlər!</p>
+    </header>
+
+    <div class="menu-grid" id="menu-container">
+        </div>
+
+    <script>
+        const foods = [
+            { name: "Mərci Şorbası", price: "4 AZN", desc: "Limon və xırtıldayan çörək ilə", img: "https://picsum.photos/200?random=1" },
+            { name: "Sezar Salatı", price: "12 AZN", desc: "Toyuq, parmezan və xüsusi sous", img: "https://picsum.photos/200?random=2" },
+            { name: "Yunan Salatı", price: "8 AZN", desc: "Təzə tərəvəzlər və feta pendiri", img: "https://picsum.photos/200?random=3" },
+            { name: "Steyk Burger", price: "15 AZN", desc: "Dana əti, karamelizə edilmiş soğan", img: "https://picsum.photos/200?random=4" },
+            { name: "Pizza Marqarita", price: "14 AZN", desc: "Motsarella, tomat sousu, reyhan", img: "https://picsum.photos/200?random=5" },
+            { name: "Lülə Kabab", price: "10 AZN", desc: "Quzu əti, soğan və lavaş ilə", img: "https://picsum.photos/200?random=6" },
+            { name: "Tike Kabab", price: "11 AZN", desc: "Közdə bişmiş quzu əti", img: "https://picsum.photos/200?random=7" },
+            { name: "Sacüstü Toyuq", price: "18 AZN", desc: "Kənd toyuğu və tərəvəzlər", img: "https://picsum.photos/200?random=8" },
+            { name: "Fettuçini Alfredo", price: "13 AZN", desc: "Qaymaqlı sous və göbələk", img: "https://picsum.photos/200?random=9" },
+            { name: "Spagetti Bolonyez", price: "11 AZN", desc: "Qiymə ət və tomat sousu", img: "https://picsum.photos/200?random=10" },
+            { name: "Dovğa", price: "3 AZN", desc: "Göyərtili və qatıqlı milli şorba", img: "https://picsum.photos/200?random=11" },
+            { name: "Yarpaq Dolması", price: "9 AZN", desc: "Üzüm yarpağı və quzu əti", img: "https://picsum.photos/200?random=12" },
+            { name: "Plov (Turşu Qovurma)", price: "14 AZN", desc: "Zəfəranlı düyü və quzu əti", img: "https://picsum.photos/200?random=13" },
+            { name: "Forel Balığı", price: "16 AZN", desc: "Izqarada bişmiş təzə balıq", img: "https://picsum.photos/200?random=14" },
+            { name: "Naggets və Fri", price: "9 AZN", desc: "Uşaq menyusu üçün ideal", img: "https://picsum.photos/200?random=15" },
+            { name: "Pendir Boşqabı", price: "12 AZN", desc: "Yerli və xarici pendirlər", img: "https://picsum.photos/200?random=16" },
+            { name: "Qovurma", price: "13 AZN", desc: "Dana əti və kartof ilə", img: "https://picsum.photos/200?random=17" },
+            { name: "Südlü Aş", price: "6 AZN", desc: "Şirin və doyumlu", img: "https://picsum.photos/200?random=18" },
+            { name: "Manqal Salatı", price: "5 AZN", desc: "Közdə bibər, badımcan, pomidor", img: "https://picsum.photos/200?random=19" },
+            { name: "Paytaxt Salatı", price: "6 AZN", desc: "Klassik Azərbaycan resepti", img: "https://picsum.photos/200?random=20" },
+            { name: "Tiramisu", price: "8 AZN", desc: "İtalyan şirniyyatı", img: "https://picsum.photos/200?random=21" },
+            { name: "Brauni", price: "7 AZN", desc: "İsti şokoladlı keks", img: "https://picsum.photos/200?random=22" },
+            { name: "Paxlava", price: "5 AZN", desc: "Qozlu və ballı milli şirniyyat", img: "https://picsum.photos/200?random=23" },
+            { name: "Dondurma", price: "4 AZN", desc: "3 müxtəlif növ dondurma topu", img: "https://picsum.photos/200?random=24" },
+            { name: "Limonad (Ev üsulu)", price: "5 AZN", desc: "Təzə nanə və limon", img: "https://picsum.photos/200?random=25" },
+            { name: "Ayran", price: "2 AZN", desc: "Nanəli və sərin", img: "https://picsum.photos/200?random=26" },
+            { name: "Çay Dəstəyi", price: "15 AZN", desc: "Mürəbbə və şirniyyatlar ilə", img: "https://picsum.photos/200?random=27" },
+            { name: "Amerikano", price: "5 AZN", desc: "Təzə üyüdülmüş qəhvə", img: "https://picsum.photos/200?random=28" },
+            { name: "Kappuçino", price: "6 AZN", desc: "Bol köpüklü qəhvə", img: "https://picsum.photos/200?random=29" },
+            { name: "Meyvə Şirəsi", price: "4 AZN", desc: "Təbii meyvələrdən sıxılmış", img: "https://picsum.photos/200?random=30" }
+        ];
+
+        const container = document.getElementById('menu-container');
+
+        foods.forEach(food => {
+            const card = `
+                <div class="menu-card">
+                    <img src="${food.img}" alt="${food.name}">
+                    <h3>${food.name}</h3>
+                    <p>${food.desc}</p>
+                    <div class="price">${food.price}</div>
+                </div>
+            `;
+            container.innerHTML += card;
+        });
+    </script>
+</body>
+</html>
