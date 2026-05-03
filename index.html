@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium 3D Visual Menu</title>
+    <title>Premium QR Menu - 3D Visual</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -12,51 +12,38 @@
         :root { --bg: #000000; --card: #121212; --gold: #d4af37; --white: #ffffff; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--white); margin: 0; padding: 15px; }
         
+        /* Header */
         header { text-align: center; margin-top: 30px; margin-bottom: 40px; }
-        header h1 { color: var(--gold); font-size: 2.2rem; letter-spacing: 5px; margin: 0; }
+        header h1 { color: var(--gold); font-size: 2.2rem; letter-spacing: 5px; margin: 0; text-transform: uppercase; }
+        header p { font-size: 1rem; opacity: 0.9; margin: 10px 0; }
         .social-icons { display: flex; justify-content: center; gap: 25px; margin-top: 20px; }
         .social-icons i { color: var(--gold); font-size: 1.8rem; }
 
-        .menu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px; margin: 0 auto; }
+        /* Menu Grid */
+        #menu-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px; margin: 0 auto; min-height: 200px; }
         .menu-card { background: var(--card); border-radius: 20px; padding: 12px; text-align: center; border: 1px solid #222; }
-        .menu-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; }
-        .price { color: var(--gold); font-weight: 600; }
+        .menu-card img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 15px; margin-bottom: 10px; }
+        .menu-card h3 { font-size: 0.9rem; margin: 5px 0; font-weight: 400; }
+        .price { color: var(--gold); font-weight: 600; font-size: 1.1rem; }
 
-        /* --- CANLI 3D TƏRKİB MODALI --- */
-        #comp-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
-        
-        .ing-container { 
-            display: flex; flex-direction: column; gap: 20px; 
-            perspective: 1000px; padding-top: 20px;
+        /* 3D Visual Modal */
+        #comp-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        .ing-container { perspective: 1000px; display: flex; flex-direction: column; gap: 20px; }
+        .ing-item-3d { 
+            display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.05); 
+            padding: 10px 25px; border-radius: 50px; border: 1px solid var(--gold);
+            animation: floatLive 3s infinite ease-in-out; transform: rotateX(20deg);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
         }
-
-        .ing-item-3d {
-            display: flex; align-items: center; gap: 15px;
-            background: rgba(255,255,255,0.05);
-            padding: 10px 20px; border-radius: 50px;
-            border: 1px solid var(--gold);
-            transform: rotateX(20deg);
-            animation: floatLive 3s infinite ease-in-out;
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
-        }
-
-        /* İnqrediyent Şəkli */
-        .ing-img {
-            width: 50px; height: 50px;
-            object-fit: contain;
-            filter: drop-shadow(0 5px 15px rgba(255,255,255,0.3));
-        }
-
-        @keyframes floatLive {
-            0%, 100% { transform: rotateX(20deg) translateY(0) scale(1); }
-            50% { transform: rotateX(10deg) translateY(-15px) scale(1.05); }
-        }
-
+        .ing-img { width: 45px; height: 45px; object-fit: contain; filter: drop-shadow(0 5px 10px rgba(255,255,255,0.2)); }
+        @keyframes floatLive { 0%, 100% { transform: rotateX(20deg) translateY(0); } 50% { transform: rotateX(10deg) translateY(-15px); } }
         .close-modal { position: absolute; top: 30px; right: 30px; font-size: 2.5rem; color: var(--white); cursor: pointer; }
 
-        /* Admin Panel Hissələri (Dəyişilməyib) */
-        #admin-login, #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfaf5; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; color: #333; }
-        .login-box { background: white; padding: 40px; border-radius: 30px; text-align: center; width: 85%; }
+        /* Admin Layouts */
+        #admin-login, #admin-panel { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fdfaf5; z-index: 10000; display: none; flex-direction: column; align-items: center; justify-content: center; color: #333; padding: 20px; box-sizing: border-box; }
+        .login-box { background: white; padding: 40px; border-radius: 30px; text-align: center; width: 90%; max-width: 350px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .login-box input { width: 100%; padding: 15px; margin: 15px 0; border: 1px solid #ddd; border-radius: 12px; }
+        .login-box button { width: 100%; padding: 15px; background: #b0935a; color: white; border: none; border-radius: 12px; font-weight: 600; }
         .admin-trigger { position: fixed; bottom: 0; right: 0; width: 60px; height: 60px; z-index: 999; opacity: 0; }
     </style>
 </head>
@@ -70,57 +57,68 @@
         </div>
     </header>
 
-    <div class="menu-grid" id="menu-container"></div>
+    <div id="menu-container"></div>
 
     <div id="comp-modal" onclick="this.style.display='none'">
         <span class="close-modal">&times;</span>
-        <h2 id="modal-title" style="color: var(--gold); margin-bottom: 20px; text-align: center;"></h2>
+        <h2 id="modal-title" style="color: var(--gold); margin-bottom: 40px; text-align: center;"></h2>
         <div class="ing-container" id="ing-list"></div>
+    </div>
+
+    <div id="admin-login">
+        <div class="login-box">
+            <i class="fas fa-cog" style="font-size: 3rem; color: #ccc; margin-bottom: 10px;"></i>
+            <h2>Admin Paneli</h2>
+            <input type="password" id="admin-pass" placeholder="Şifrə">
+            <button onclick="login()">Daxil ol</button>
+            <p onclick="document.getElementById('admin-login').style.display='none'" style="margin-top:20px; font-size:0.8rem;">Bağla</p>
+        </div>
     </div>
 
     <div class="admin-trigger" onclick="adminBtn()"></div>
 
     <script>
-        const firebaseConfig = { databaseURL: "SƏNİN_LİNKİN" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        // İnqrediyent Şəkilləri Bazası (PNG formatında canlı görüntülər)
+        // İnqrediyent Vizual Bazası
         const ingIcons = {
             "Ət": "https://cdn-icons-png.flaticon.com/512/3143/3143640.png",
             "Yumurta": "https://cdn-icons-png.flaticon.com/512/837/837165.png",
             "Pomidor": "https://cdn-icons-png.flaticon.com/512/1202/1202125.png",
             "Pendir": "https://cdn-icons-png.flaticon.com/512/819/819873.png",
-            "Mərci": "https://cdn-icons-png.flaticon.com/512/7145/7145013.png",
-            "Toyuq": "https://cdn-icons-png.flaticon.com/512/3143/3143641.png",
-            "Sous": "https://cdn-icons-png.flaticon.com/512/3449/3449377.png",
-            "Limon": "https://cdn-icons-png.flaticon.com/512/2909/2909808.png"
+            "Toyuq": "https://cdn-icons-png.flaticon.com/512/3143/3143641.png"
         };
 
-        const foods = [
-            { name: "Mərci Şorbası", price: 4, img: "https://images.pexels.com/photos/539451/pexels-photo-539451.jpeg?w=400", components: ["Mərci", "Limon", "Sous"] },
-            { name: "Kabab", price: 10, img: "https://images.pexels.com/photos/2233729/pexels-photo-2233729.jpeg?w=400", components: ["Ət", "Pomidor", "Sous"] },
-            { name: "Səhər Yeməyi", price: 8, img: "https://images.pexels.com/photos/103124/pexels-photo-103124.jpeg?w=400", components: ["Yumurta", "Pendir", "Pomidor"] }
-        ];
+        // 30 Nümunə Yemək (Firebase qoşulmasa da boş görünməyəcək)
+        const demoFoods = [];
+        for(let i=1; i<=30; i++) {
+            demoFoods.push({
+                name: "Möhtəşəm Yemək " + i,
+                price: 10 + i,
+                img: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400",
+                components: ["Ət", "Pomidor", "Pendir"]
+            });
+        }
 
-        function renderMenu() {
+        // Menyunu ekrana çıxar
+        function render(data) {
             const container = document.getElementById('menu-container');
-            foods.forEach((food, index) => {
+            container.innerHTML = '';
+            data.forEach((food, index) => {
                 container.innerHTML += `
-                <div class="menu-card" onclick="openLive3D(${index})">
+                <div class="menu-card" onclick="open3D(${index})">
                     <img src="${food.img}">
                     <h3>${food.name}</h3>
                     <div class="price">${food.price} AZN</div>
+                    <p style="font-size:0.6rem; color:#555; margin-top:5px;">Tərkibə bax</p>
                 </div>`;
             });
         }
 
-        window.openLive3D = function(index) {
-            const food = foods[index];
-            document.getElementById('modal-title').innerText = food.name + " Tərkibi";
+        // 3D Tərkib Açılışı
+        window.open3D = function(index) {
+            const food = demoFoods[index]; // Firebase qoşulu deyilsə demo-dan götürür
+            document.getElementById('modal-title').innerText = food.name;
             const list = document.getElementById('ing-list');
             list.innerHTML = '';
-
             food.components.forEach((item, i) => {
                 const icon = ingIcons[item] || "https://cdn-icons-png.flaticon.com/512/706/706164.png";
                 setTimeout(() => {
@@ -129,16 +127,28 @@
                         <img src="${icon}" class="ing-img">
                         <span>${item}</span>
                     </div>`;
-                }, i * 300);
+                }, i * 250);
             });
             document.getElementById('comp-modal').style.display = 'flex';
         }
 
-        // Admin girişi üçün sadə düymə funksiyası (Admin koda toxunmadım)
-        let clicks = 0;
-        function adminBtn() { clicks++; if(clicks >= 3) { alert("Admin panel aktivdir (Firebase qoşun)"); clicks=0; } }
+        // Admin girişi
+        let clickCount = 0;
+        function adminBtn() { clickCount++; if(clickCount >= 3) { document.getElementById('admin-login').style.display='flex'; clickCount=0; } }
+        function login() { if(document.getElementById('admin-pass').value === '1234') { alert("Admin panel aktivdir"); } else { alert("Şifrə səhvdir!"); } }
 
-        renderMenu();
+        // BAŞLATMA: Həm demo-nu göstər, həm Firebase-i yoxla
+        render(demoFoods); 
+
+        // Firebase (Opsional bağlantı - əgər linkin varsa bura qoy)
+        try {
+            const firebaseConfig = { databaseURL: "SƏNİN_LİNKİN" };
+            firebase.initializeApp(firebaseConfig);
+            firebase.database().ref('foods').on('value', (snap) => {
+                if(snap.exists()) render(Object.values(snap.val()));
+            });
+        } catch(e) { console.log("Firebase qoşulmayıb, Demo davam edir."); }
+
     </script>
 </body>
 </html>
